@@ -32,12 +32,15 @@ public class CameraMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //ESC를 눌렀을때의 게임종료
         if (Input.GetKeyDown(KeyCode.Escape))
             UnityEditor.EditorApplication.isPlaying = false;
+        //====================================================
+
 
         Cursor.lockState = CursorLockMode.Confined;
 
+        //키보드 입력에의한 카메라고정 유무
         if(Input.GetKeyDown(KeyCode.Y))
         {
             if (!CameraFix) CameraFix = true;
@@ -47,9 +50,13 @@ public class CameraMove : MonoBehaviour
         if (Input.GetKey(KeyCode.Space)) CameraFix = true;
 
         else if (Input.GetKeyUp(KeyCode.Space)) CameraFix = false;
+        //====================================================
 
+
+        //카메라 휠 작동값을 받아옴
         float Z = Input.GetAxis("Mouse ScrollWheel") * Zoom_Speed;
 
+        //줌을 하게되었을때의 움직임 수치값 변동
         if (Z > 0.0f)
             Zoom = Mathf.Lerp(Zoom, Zoom_Distance, Z);
 
@@ -57,6 +64,9 @@ public class CameraMove : MonoBehaviour
             Zoom = Mathf.Lerp(Zoom,0.0f,-Z);
 
         Zoom_Pos = transform.forward * Zoom;
+        //====================================================
+
+        //카메라 고정유무에 따른 카메라 움직임
         if (CameraFix)
             Follow_Camera_Pos = Player.position + Offset_Pos;
 
@@ -74,7 +84,9 @@ public class CameraMove : MonoBehaviour
             else if (Input.mousePosition.y > (Screen.height - 10.0f))
                 Follow_Camera_Pos += Vector3.forward * 10.0f * Time.deltaTime;
         }
+        //====================================================
 
+        //카메라 자유시점 및 고정시점에서의 줌인/줌 아웃 작동
         transform.position = Follow_Camera_Pos + Zoom_Pos;
     }
 }
